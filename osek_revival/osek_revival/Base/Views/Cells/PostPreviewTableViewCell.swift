@@ -49,12 +49,12 @@ class PostPreviewTableViewCell: UITableViewCell{
 
     func configure(viewModel: PostViewModel){
         postTitleLabel.text = viewModel.title
-         if let data = viewModel.imageData{
+         if let data = viewModel.postImageData{
              postImageView.image = UIImage(data: data)
-         }else if let url = viewModel.imageURL{
+         }else if let url = viewModel.postImageURL{
              let task = URLSession.shared.dataTask(with: url) {[weak self] data, _, _ in
                  guard let data = data else{return}
-                 viewModel.imageData = data
+                 viewModel.postImageData = data
                  
                  DispatchQueue.main.async {
                      self?.postImageView.image = UIImage(data: data)

@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
+
 class ProfileHeaderView: BaseView{
      private lazy var imageView: UIImageView = {
        let imageView = UIImageView()
@@ -23,7 +24,7 @@ class ProfileHeaderView: BaseView{
         let label = UILabel()
         label.font = .systemFont(ofSize: 45, weight: .bold)
         label.textColor = .white
-        label.text = "SOME NICKNAME"
+        label.text = "NICKNAME"
         label.numberOfLines = 0
         return label
     }()
@@ -49,7 +50,22 @@ class ProfileHeaderView: BaseView{
         return button
     }()
     
-    private lazy var createPostButton: UIButton = {
+    private lazy var settingsButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = Resources.Colors.blockColor
+        button.layer.cornerRadius = 20
+        
+        button.setImage(UIImage(systemName: "gear", withConfiguration:
+                                    UIImage.SymbolConfiguration(pointSize: 23)),
+                        for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+
+        button.tintColor = .white
+        button.setTitle("Настройки", for: .normal)
+        return button
+    }()
+    
+     lazy var createPostButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Resources.Colors.activeColor
         button.layer.cornerRadius = 20
@@ -62,7 +78,6 @@ class ProfileHeaderView: BaseView{
         button.setTitle("Создать пост", for: .normal)
         button.contentHorizontalAlignment = .center
         button.contentVerticalAlignment = .center
-        
         button.imageView?.contentMode = .scaleAspectFit
         
 
@@ -70,21 +85,6 @@ class ProfileHeaderView: BaseView{
         return button
     }()
     
-    
-    private lazy var settingsButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = Resources.Colors.blockColor
-        button.layer.cornerRadius = 20
-        
-        button.setImage(UIImage(systemName: "gear", withConfiguration: 
-                                    UIImage.SymbolConfiguration(pointSize: 23)),
-                        for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
-
-        button.tintColor = .white
-        button.setTitle("Настройки", for: .normal)
-        return button
-    }()
     
     private lazy var horizontalStackView: UIStackView = {
        let stackView = UIStackView()
@@ -102,13 +102,22 @@ class ProfileHeaderView: BaseView{
          return stackView
      }()
     
-    private lazy var descriptionLabel: UILabel = {
+    private lazy var statusLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 18)
         label.textColor = .white
         label.textAlignment = .left
         
         label.text = "Мне интересно происходящее тут"
+        return label
+    }()
+    
+    private lazy var userPostsLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 40, weight: .bold)
+        label.textColor = .white
+        label.text = "Осеки"
+        label.numberOfLines = 0
         return label
     }()
     
@@ -119,6 +128,7 @@ class ProfileHeaderView: BaseView{
     
     func setNickName(nickName: String){
         nickNameLabel.text = nickName.uppercased()
+        userPostsLabel.text = "Осеки \(nickName.uppercased())"
     }
     
     func setProfileImage(profileImage: UIImage?){
@@ -136,13 +146,15 @@ extension ProfileHeaderView{
         super.addViews()
         addSubview(imageView)
         addSubview(nickNameLabel)
-        addSubview(descriptionLabel)
+        addSubview(statusLabel)
         addSubview(verticalStackView)
+        addSubview(userPostsLabel)
         verticalStackView.addArrangedSubview(horizontalStackView)
         verticalStackView.addArrangedSubview(createPostButton)
         horizontalStackView.addArrangedSubview(shareButton)
         horizontalStackView.addArrangedSubview(settingsButton)
     }
+    
     override func setUpConstraints(){
         super.setUpConstraints()
         imageView.snp.makeConstraints { make in
@@ -166,9 +178,14 @@ extension ProfileHeaderView{
             )
         }
         
-        descriptionLabel.snp.makeConstraints { make in
+        statusLabel.snp.makeConstraints { make in
             make.top.equalTo(verticalStackView.snp.bottom).offset(20)
             make.leading.equalTo(nickNameLabel.snp.leading)
+        }
+        
+        userPostsLabel.snp.makeConstraints { make in
+            make.leading.equalTo(nickNameLabel.snp.leading)
+            make.top.equalTo(statusLabel.snp.bottom).offset(20)
         }
         
     }

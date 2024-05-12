@@ -10,19 +10,25 @@ import UIKit
 
 class PostViewModel{
     let title: String
-    let imageURL: URL?
-    var imageData: Data?
+    let postImageURL: URL?
+    var postImageData: Data?
     var description: String?
     
+    var author: User
     
-    init(title: String, imageURL: URL?) {
+    
+    init(title: String, imageURL: URL?, user: User) {
         self.title = title
-        self.imageURL = imageURL
+        self.postImageURL = imageURL
+        self.author = user
+        
     }
     
-    init(title: String, imageURL: URL?, description: String) {
+    init(title: String, imageURL: URL?, description: String, user: User) {
         self.title = title
-        self.imageURL = imageURL
+        self.postImageURL = imageURL
         self.description = description
+        self.author = user
+
     }
 }
